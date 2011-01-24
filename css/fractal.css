@@ -1,0 +1,15 @@
+canvas { 
+    border: 1px solid black;
+    /*border-radius:5px;
+    -webkit-border--radius:5px;
+    -moz-border-radius:5px;*/
+}
+#canvcont {
+    background-color:#999;
+}
+input[type=button] {
+    padding:3px;
+}
+#maxits {
+    width:30px;
+}
