@@ -5,7 +5,7 @@ canvas {
     -moz-border-radius:5px;*/
 }
 #canvcont {
-    background-color:#999;
+    border:1px solid silver;
 }
 input[type=button] {
     padding:3px;
