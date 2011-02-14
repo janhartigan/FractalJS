@@ -193,7 +193,7 @@
 			 * @param Int		duration
 			 */
 			afterDraw: function(zoom) {}
-		}
+		},
 		
 		
 		//
