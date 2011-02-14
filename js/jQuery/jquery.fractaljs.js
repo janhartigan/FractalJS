@@ -383,4 +383,4 @@
 				fractals.push(newFract);
 		});
 	};
-})();
+})(jQuery);
