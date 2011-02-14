@@ -130,6 +130,12 @@
 		 */
 		canvas: null,
 		
+		/* The jQuery object representing the canvas element for this fractal
+		 * 
+		 * @type jQuery Object
+		 */
+		$canvas: null,
+		
 		/* The canvas element's 2d drawing context for this fractal
 		 * 
 		 * @type context
@@ -219,6 +225,7 @@
 				$.extend(this.options, options);
 			
 			this.canvas = canvas;
+			this.$canvas = $(canvas);
 			this.ctx = canvas.getContext('2d');
 			this.width = canvas.width;
 			this.height = canvas.height;
@@ -382,5 +389,20 @@
 			if (newFract)
 				fractals.push(newFract);
 		});
+	};
+	
+	//this function gets the fractal object associated with the canvas item
+	$.fn.fractaljsObject = function() {
+		var obj = false,
+			canv = this;
+		
+		$.each(fractals, function() {
+			if (canv === this.canvas) {
+				obj = this;
+				return false;
+			}
+		});
+		
+		return obj;
 	};
 })(jQuery);
