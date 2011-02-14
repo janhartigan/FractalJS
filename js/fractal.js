@@ -203,7 +203,7 @@ function drawMandelbrot() {
             var i = 0;
             var inSet = false;
             
-            while (z.modSquared() < 4) {c
+            while (z.modSquared() < 4) {
                 z = z.mult(z).add(c);
                 i++;
                 
