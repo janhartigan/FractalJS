@@ -192,7 +192,7 @@
 			 * @param Object	zoom ==> {x, y, width, height}
 			 * @param Int		duration
 			 */
-			afterDraw: function(zoom, duration) {}
+			afterDraw: function(zoom) {}
 		}
 		
 		
@@ -205,6 +205,8 @@
 		 * 
 		 * @param domElement	canvas
 		 * @param Object		options
+		 * 
+		 * @return Bool
 		 */
 		function init(canvas, options) {
 			var self = this;
@@ -235,6 +237,8 @@
 			}
 			
 			this.drawFractal();
+			
+			return true;
 		},
 		
 		/**
@@ -301,7 +305,11 @@
 				}
 			}
 			
+			//put the image data into the canvas (i.e. render it)
 			this.ctx.putImageData(this.image, 0, 0);
+			
+			//call the afterDraw callback
+			this.options.afterDraw.call(this.$canvas, this.zoom);
 		},
 		
 		/**
@@ -366,7 +374,10 @@
 	//extend the jQuery object 
 	$.fn.fractaljs = function(options) {
 		return this.each(function() {
-			fractals.push(new filePicker(this, options));
+			var newFract = new fractal(this, options);
+			
+			if (newFract)
+				fractals.push(newFract);
 		});
 	};
 })();
