@@ -15,8 +15,8 @@
 	 * @param Object	imaginary
 	 */
 	function ComplexNumber(real,imaginary) {
-	    this.real = real;
-	    this.imaginary = imaginary;
+		this.real = real;
+		this.imaginary = imaginary;
 	}
 	
 	//Then we make the prototype object for the class so we can perform actions on complex numbers (like multiplication, addition, etc.)
@@ -221,6 +221,145 @@
 			this.width = canvas.width;
 			this.height = canvas.height;
 			
+			//set up the image data for the canvas
+			if (this.ctx.createImageData)
+				this.image = this.ctx.createImageData(this.width, this.height);
+			else if (this.ctx.getImageData)
+				this.image = this.ctx.getImageData(0, 0, this.width, this.height);
+			else {
+				this.image = {
+					'width' : this.width,
+					'height' : this.height,
+					'data' : new Array(this.width * this.height * 4)
+				};
+			}
+			
+			this.drawFractal();
+		},
+		
+		/**
+		 * Calculates the ImageData for the canvas as it iterates over each pixel to determine if it is inside or outside of the set,
+		 * and if it is outside the set, how quickly we determined if it ran off to infinity 
+		 */
+		drawFractal: function() {
+			var z0 = new ComplexNumber(0,0),
+				z = z0,
+				c,
+				i,
+				pixel = 0,
+				y,
+				x,
+				itminus,
+				colors,
+				overIterated = false;
+			
+			//for each vertical row in the canvas
+			for (y = 0; y < this.height; y++) {
+				//for each horizontal pixel in the row
+				for (x = 0; x < this.width; x++) {
+					z = z0;
+					c = this.convertPixelToPoint(x, y);
+					i = 0;
+					overIterated = false;
+					
+					while (z.modSquared() < 4 && !overIterated) {
+						z = z.mult(z).add(c);
+						i++;
+						
+						if (i > this.options.maxIterations) {
+							//if z.modSquared() is still less than 4 and we're past our maxIterations counter, assume the point is in the set
+							//and color the pixel black
+							i = 0;
+							this.image.data[pixel] = 0;
+							this.image.data[pixel+1] = 0;
+							this.image.data[pixel+2] = 0;
+							this.image.data[pixel+3] = 255;
+							pixel += 4;
+							
+							overIterated = true;
+						}
+					}
+					
+					if (!overIterated) {
+						//if the point is outside of the set, color it
+						itminus = (Math.log(
+										Math.log(
+											Math.sqrt(
+												Math.pow(z.real, 2) + Math.pow(z.imaginary, 2)
+											)
+										) / Math.log(2)
+									) / Math.log(2)
+								);
+						colors = this.rainbowColor((i - itminus) / this.options.maxIterations);
+						
+						this.image.data[pixel] = colors.r;
+						this.image.data[pixel+1] = 0;
+						this.image.data[pixel+2] = 0;
+						this.image.data[pixel+3] = 255;
+						pixel += 4;
+					}
+				}
+			}
+			
+			this.ctx.putImageData(this.image, 0, 0);
+		},
+		
+		/**
+		 * Converts a pixel on the screen to a complex number point that it represents on the complex plane
+		 * 
+		 * @param Int	x
+		 * @param Int	y
+		 */
+		convertPixelToPoint: function(x, y) {
+			var stepx = this.zoom.width / (this.width * 1.0),
+				stepy = this.zoom.height / (this.height * 1.0);
+				
+			return new ComplexNumber(this.zoom.x + x * stepx, this.zoom.y - y * stepy);
+		},
+		
+		/**
+		 * Takes a number and assigns an r, g, and b value to it
+		 * 
+		 * @param Number	position
+		 * 
+		 * @return Object	{r, g, b}
+		 */
+		rainbowColor: function(position) {
+			var cols = [],
+				nbars = 6, //number of color bars
+				m = nbars * position,
+				n = parseInt(m), //integer portion of m
+				f = m - n, //fraction portion of m
+				t = parseInt(f * 255);
+			
+			switch(n) {
+				case 0:
+					cols.r = 255;
+					cols.g = t;
+					cols.b = 0; break;
+				case 1:
+					cols.r = 255 - t;
+					cols.g = 255;
+					cols.b = 0; break
+				case 2:
+					cols.r = 0;
+					cols.g = 255;
+					cols.b = t; break;
+				case 3:
+					cols.r = 0;
+					cols.g = 255 - t;
+					cols.b = 255; break;
+				case 4:
+					cols.r = t;
+					cols.g = 0;
+					cols.b = 255; break;
+				case 5:
+					cols.r = 255;
+					cols.g = 0;
+					cols.b = 255 - 5; break;
+			}
+			
+			return cols;
 		}
 	};
 	
