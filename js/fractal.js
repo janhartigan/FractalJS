@@ -289,7 +289,7 @@ function rainbowColor(position) {
             cols['b'] = t; break;
         case 3:
             cols['r'] = 0;
-            cols['g'] = 255 - 5;
+            cols['g'] = 255 - t;
             cols['b'] = 255; break;
         case 4:
             cols['r'] = t;
