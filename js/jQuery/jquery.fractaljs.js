@@ -161,8 +161,8 @@
 		zoom: {
 			x: -2.3,
 			y: 1.5,
-			w: 3,
-			h: 3
+			width: 3,
+			height: 3
 		},
 		
 		/* The pixel-for-pixel image data in the current rendering of the canvas
@@ -245,6 +245,9 @@
 			
 			this.drawFractal();
 			
+			if (this.options.useControlBar)
+				this.buildControlBar();
+			
 			return true;
 		},
 		
@@ -304,8 +307,8 @@
 						colors = this.rainbowColor((i - itminus) / this.options.maxIterations);
 						
 						this.image.data[pixel] = colors.r;
-						this.image.data[pixel+1] = 0;
-						this.image.data[pixel+2] = 0;
+						this.image.data[pixel+1] = colors.g;
+						this.image.data[pixel+2] = colors.b;
 						this.image.data[pixel+3] = 255;
 						pixel += 4;
 					}
@@ -375,6 +378,40 @@
 			}
 			
 			return cols;
+		},
+		
+		/**
+		 * Builds the control bar below the canvas
+		 */
+		buildControlBar: function() {
+			var html = 	'<div class="fractaljs-control-bar" style="width:' + this.width + 'px">' +
+							'<input type="button" name="zoomin" value="zoom in" />' +
+							'<input type="button" name="zoomout" value="zoom out" />' +
+						'</div>',
+				$bar,
+				self = this;
+			
+			this.$canvas.after(html);
+			$bar = this.$canvas.next('.fractaljs-control-bar');
+			
+			//set up event handlers
+			$bar.find('input[name=zoomin]').click(function() {
+				self.zoom.x += self.zoom.width / 4;
+				self.zoom.y -= self.zoom.height / 4;
+				self.zoom.width /= 2;
+				self.zoom.height /= 2;
+				
+				self.drawFractal();
+			});
+			
+			$bar.find('input[name=zoomout]').click(function() {
+				self.zoom.x -= self.zoom.width / 2;
+				self.zoom.y += self.zoom.height / 2;
+				self.zoom.width *= 2;
+				self.zoom.height *= 2;
+				
+				self.drawFractal();
+			});
 		}
 	};
 	
@@ -393,14 +430,17 @@
 	
 	//this function gets the fractal object associated with the canvas item
 	$.fn.fractaljsObject = function() {
-		var obj = false,
-			canv = this;
+		var obj = false;
 		
-		$.each(fractals, function() {
-			if (canv === this.canvas) {
-				obj = this;
-				return false;
-			}
+		this.each(function() {
+			var canv = this;
+			
+			$.each(fractals, function() {
+				if (canv == this.canvas) {
+					obj = this;
+					return false;
+				}
+			});
 		});
 		
 		return obj;
