@@ -208,7 +208,7 @@
 		 * 
 		 * @return Bool
 		 */
-		function init(canvas, options) {
+		init: function (canvas, options) {
 			var self = this;
 			
 			if (!canvas.getContext)
@@ -374,6 +374,9 @@
 	//extend the jQuery object 
 	$.fn.fractaljs = function(options) {
 		return this.each(function() {
+			if (this.nodeName != "CANVAS")
+				return true;
+			
 			var newFract = new fractal(this, options);
 			
 			if (newFract)
