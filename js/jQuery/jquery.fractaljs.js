@@ -190,7 +190,7 @@
 			 * 
 			 * @type Int
 			 */
-			maxIterations: 50,
+			maxIterations: 150,
 			
 			/**
 			 * This callback fires after the fractal has been drawn
@@ -243,10 +243,24 @@
 				};
 			}
 			
+			//draw the fractal
 			this.drawFractal();
 			
+			//set up the control bar if the option useControlBar is set to true
 			if (this.options.useControlBar)
 				this.buildControlBar();
+			
+			//set up the callback for when the canvas is clicked (to center the image on the click)
+			this.$canvas.click(function(e) {
+				var o = $(this).offset(),
+					x = e.pageX - o.left,
+					y = e.pageY - o.top,
+					c = self.convertPixelToPoint(x, y);
+				
+				self.zoom.x = c.real - (self.zoom.width / 2);
+				self.zoom.y = c.imaginary + (self.zoom.height / 2);
+				self.drawFractal();
+			});
 			
 			return true;
 		},
