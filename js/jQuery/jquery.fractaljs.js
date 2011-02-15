@@ -179,7 +179,7 @@
 			
 			/* Determines whether or not to draw the control bar below the fractal's canvas.
 			 * If you choose not to use this, you could use the afterDraw callback to display the fractal data to your users, and you should also
-			 * make use of the zoom buttons options to let your users perform actions on the fractal.
+			 * make use of the zoomButton options to let your users perform actions on the fractal.
 			 * 
 			 * @type Bool
 			 */
@@ -190,7 +190,13 @@
 			 * 
 			 * @type Int
 			 */
-			maxIterations: 150,
+			maxIterations: 250,
+			
+			/* The color range multiplier. This number represents the number of times the color spectrum repeats itself.
+			 * 
+			 * @type Int
+			 */
+			colorRangeRepeats: 7,
 			
 			/**
 			 * This callback fires after the fractal has been drawn
@@ -279,7 +285,8 @@
 				x,
 				itminus,
 				colors,
-				overIterated = false;
+				overIterated = false,
+				iterationDivider = this.options.maxIterations / this.options.colorRangeRepeats;
 			
 			//for each vertical row in the canvas
 			for (y = 0; y < this.height; y++) {
@@ -318,7 +325,7 @@
 										) / Math.log(2)
 									) / Math.log(2)
 								);
-						colors = this.rainbowColor((i - itminus) / this.options.maxIterations);
+						colors = this.rainbowColor((i - itminus) / iterationDivider);
 						
 						this.image.data[pixel] = colors.r;
 						this.image.data[pixel+1] = colors.g;
@@ -359,7 +366,9 @@
 		rainbowColor: function(position) {
 			var cols = [],
 				nbars = 6, //number of color bars
-				m = nbars * position,
+				positionInt = parseInt(position);
+				positionFrac = position-positionInt;
+				m = nbars * positionFrac,
 				n = parseInt(m), //integer portion of m
 				f = m - n, //fraction portion of m
 				t = parseInt(f * 255);
