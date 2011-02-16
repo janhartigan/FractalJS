@@ -288,6 +288,9 @@
 				overIterated = false,
 				iterationDivider = this.options.maxIterations / this.options.colorRangeRepeats;
 			
+			this.width = this.canvas.width;
+			this.height = this.canvas.height;
+			
 			//for each vertical row in the canvas
 			for (y = 0; y < this.height; y++) {
 				//for each horizontal pixel in the row
