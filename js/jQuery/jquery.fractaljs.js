@@ -190,7 +190,7 @@
 			 * 
 			 * @type Int
 			 */
-			maxIterations: 250,
+			maxIterations: 300,
 			
 			/* The color range multiplier. This number represents the number of times the color spectrum repeats itself.
 			 * 
