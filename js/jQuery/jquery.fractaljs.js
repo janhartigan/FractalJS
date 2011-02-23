@@ -198,11 +198,22 @@
 			 */
 			colorRangeRepeats: 7,
 			
+			/* If this is not 0 (i.e. if it has been set as an option), it will be the new width of the canvas
+			 * 
+			 * @type Int
+			 */
+			width: 0,
+			
+			/* If this is not 0 (i.e. if it has been set as an option), it will be the new height of the canvas
+			 * 
+			 * @type Int
+			 */
+			height: 0,
+			
 			/**
 			 * This callback fires after the fractal has been drawn
 			 * 
 			 * @param Object	zoom ==> {x, y, width, height}
-			 * @param Int		duration
 			 */
 			afterDraw: function(zoom) {}
 		},
@@ -233,8 +244,18 @@
 			this.canvas = canvas;
 			this.$canvas = $(canvas);
 			this.ctx = canvas.getContext('2d');
+			
+			//check if the width and height options have been set
+			if (this.options.width)
+				this.$canvas.attr('width', this.options.width);
+			if (this.options.height)
+				this.$canvas.attr('height', this.options.height);
+			
 			this.width = canvas.width;
 			this.height = canvas.height;
+			
+			//adjust the zoom settings to accommodate non-square canvases
+			this.zoom.height = this.zoom.width * (this.height/this.width);
 			
 			//set up the image data for the canvas
 			if (this.ctx.createImageData)
