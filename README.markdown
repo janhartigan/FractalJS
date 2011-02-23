@@ -9,7 +9,7 @@ FractalJS is a jQuery plugin that lets you convert any canvas element into a nav
 Starting with a simple canvas that has a width and height declared:
 
 <pre>
-&gt;canvas id="mycanvas" width="300" height="300"&lt;&gt;/canvas&lt;
+&lt;canvas id="mycanvas" width="300" height="300"&gt;&lt;/canvas&gt;
 </pre>
 
 To initialize the plugin, you run this code:
