@@ -26,6 +26,10 @@ This simple code will create a rendering of the Mandelbrot set and add "zoom in"
 
 If you want to do something after the fractal is rendered, you have access to an afterDraw() method that is fired on completion of the drawing. The zoom object (which contains width, height, x, and y information for the rendered set) is passed as a parameter to this function.
 
+It's also important to keep in mind that FractalJS doesn't have the capacity for infinite zoom. This is because of the limits of floating point precision in JavaScript. As floating point numbers (e.g. 0.0000005 or 1.4242455353294) get more precise, they approach the bit limits. This means that beyond a certain limit, floating point numbers will usually round to some less precise number. Watch what happens as we zoom into some deep level of a 148x148 Mandelbrot set:
+
+<img src="https://github.com/janhartigan/FractalJS/raw/master/example/pixelation.png" />
+
 ## options
 
 These are the settings and callback functions available for the plugin:
