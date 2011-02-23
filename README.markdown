@@ -22,7 +22,7 @@ $('#mycanvas').fractaljs();
 
 This simple code will create a rendering of the Mandelbrot set and add "zoom in" and "zoom out" buttons. If you supply width and height values into the options, the canvas's width and height will be overridden by them. The rendered canvas will look something like this:
 
-<img src="https://github.com/janhartigan/filepicker/raw/master/example/mandelbrot300x300_50maxit_minzoom.png" />
+<img src="https://github.com/janhartigan/FractalJS/raw/master/example/mandelbrot300x300_50maxit_minzoom.png" />
 
 If you want to do something after the fractal is rendered, you have access to an afterDraw() method that is fired on completion of the drawing. The zoom object (which contains width, height, x, and y information for the rendered set) is passed as a parameter to this function.
 
