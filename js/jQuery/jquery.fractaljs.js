@@ -469,11 +469,41 @@
 		}
 	};
 	
+	/**
+	 * This private function takes a canvas and checks if there are any existing fractal objects associated with it
+	 * 
+	 * @param DOMElement	canvas
+	 * 
+	 * @return mixed		false / fractal object
+	 */
+	function fractalExists(canvas) {
+		var result = false;
+		
+		$.each(fractals, function(ind, el) {
+			if (canvas == this.canvas) {
+				result = this;
+				return false;
+			}
+		});
+		
+		return result;
+	}
+	
 	//extend the jQuery object 
 	$.fn.fractaljs = function(options) {
 		return this.each(function() {
+			var canvas = this,
+				existingFractal = false;
+			
 			if (this.nodeName != "CANVAS")
 				return true;
+			
+			existingFractal = fractalExists(canvas);
+			
+			if (existingFractal) {
+				existingFractal.drawFractal();
+				return true;
+			}
 			
 			var newFract = new fractal(this, options);
 			
