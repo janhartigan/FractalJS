@@ -459,6 +459,13 @@
 				
 				self.drawFractal();
 			});
+		},
+		
+		/**
+		 * Destroys all traces of the fractal object
+		 */
+		destroy: function() {
+			this.ctx.clearRect(0, 0, this.width, this.height);
 		}
 	};
 	
@@ -475,7 +482,9 @@
 		});
 	};
 	
-	//this function gets the fractal object associated with the canvas item
+	/**
+	 * this function gets the fractal object associated with the canvas item
+	 */
 	$.fn.fractaljsObject = function() {
 		var obj = false;
 		
@@ -491,5 +500,22 @@
 		});
 		
 		return obj;
+	};
+	
+	/**
+	 * this function destroys the fractal object related to the supplied canvas
+	 */
+	$.fn.destroyFractalJS = function() {
+		return this.each(function() {
+			var canv = this;
+			
+			$.each(fractals, function(ind, el) {
+				if (canv == this.canvas) {
+					this.destroy();
+					fractals.splice(ind, 1);
+					return false;
+				}
+			});
+		}); 
 	};
 })(jQuery);
