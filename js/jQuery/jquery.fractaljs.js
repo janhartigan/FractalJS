@@ -257,19 +257,6 @@
 			//adjust the zoom settings to accommodate non-square canvases
 			this.zoom.height = this.zoom.width * (this.height/this.width);
 			
-			//set up the image data for the canvas
-			if (this.ctx.createImageData)
-				this.image = this.ctx.createImageData(this.width, this.height);
-			else if (this.ctx.getImageData)
-				this.image = this.ctx.getImageData(0, 0, this.width, this.height);
-			else {
-				this.image = {
-					'width' : this.width,
-					'height' : this.height,
-					'data' : new Array(this.width * this.height * 4)
-				};
-			}
-			
 			//draw the fractal
 			this.drawFractal();
 			
@@ -293,6 +280,23 @@
 		},
 		
 		/**
+		 * Sets up the image data object to match the current width and height of the canvas
+		 */
+		establishImageData: function() {
+			if (this.ctx.createImageData)
+				this.image = this.ctx.createImageData(this.width, this.height);
+			else if (this.ctx.getImageData)
+				this.image = this.ctx.getImageData(0, 0, this.width, this.height);
+			else {
+				this.image = {
+					'width' : this.width,
+					'height' : this.height,
+					'data' : new Array(this.width * this.height * 4)
+				};
+			}
+		},
+		
+		/**
 		 * Calculates the ImageData for the canvas as it iterates over each pixel to determine if it is inside or outside of the set,
 		 * and if it is outside the set, how quickly we determined if it ran off to infinity 
 		 */
@@ -311,6 +315,7 @@
 			
 			this.width = this.canvas.width;
 			this.height = this.canvas.height;
+			this.establishImageData();
 			
 			//for each vertical row in the canvas
 			for (y = 0; y < this.height; y++) {
