@@ -254,9 +254,6 @@
 			this.width = canvas.width;
 			this.height = canvas.height;
 			
-			//adjust the zoom settings to accommodate non-square canvases
-			this.zoom.height = this.zoom.width * (this.height/this.width);
-			
 			//draw the fractal
 			this.drawFractal();
 			
@@ -311,11 +308,16 @@
 				itminus,
 				colors,
 				overIterated = false,
-				iterationDivider = this.options.maxIterations / this.options.colorRangeRepeats;
+				iterationDivider = this.options.maxIterations / this.options.colorRangeRepeats,
+				origZoomHeight = this.zoom.height;
 			
 			this.width = this.canvas.width;
 			this.height = this.canvas.height;
 			this.establishImageData();
+			
+			//adjust the zoom settings to accommodate non-square canvases
+			this.zoom.height = this.zoom.width * (this.height/this.width);
+			this.zoom.y = this.zoom.y + (origZoomHeight - this.zoom.height);
 			
 			//for each vertical row in the canvas
 			for (y = 0; y < this.height; y++) {
