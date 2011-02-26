@@ -317,7 +317,7 @@
 			
 			//adjust the zoom settings to accommodate non-square canvases
 			this.zoom.height = this.zoom.width * (this.height/this.width);
-			this.zoom.y = this.zoom.y - (origZoomHeight - this.zoom.height);
+			this.zoom.y = this.zoom.y - (origZoomHeight - this.zoom.height)/2;
 			
 			//for each vertical row in the canvas
 			for (y = 0; y < this.height; y++) {
