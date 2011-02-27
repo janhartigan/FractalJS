@@ -78,3 +78,33 @@ These are the settings and callback functions available for the plugin:
 	afterDraw: function(zoom) {}
 }
 </pre>
+
+## exposed methods
+
+FractalJS exposes a few methods on the jQuery object. For now, these just allow you to create, destroy, and get access to the fractal object being used for the supplied canvas element.
+
+### fractaljs()
+
+This method is the one into which you pass the options object. You can use this to create a new fractal or re-render a canvas that has already been initialized with FractalJS. It is used like this:
+
+<pre>
+$('#mycanvas').fractaljs();
+</pre>
+
+After you have initialized the fractal, you can reset certain options by resupplying a new options object. Note that FractalJS automatically figures out the size of your canvas before each drawing, so you can tinker with this outside of FractalJS and everything should work well.
+
+### fractaljsDestroy()
+
+This method will destroy the fractal object associated with the canvas and clear the canvas. It is used like this:
+
+<pre>
+$('#mycanvas').fractaljsDestroy();
+</pre>
+
+### fractaljsObject()
+
+This method will return the the fractal object associated with the supplied canvas or false if none are found. This will give you access to the methods and properties for that particular fractal object. It is used like this:
+
+<pre>
+$('#mycanvas').fractaljsObject();
+</pre>
