@@ -508,6 +508,7 @@
 			existingFractal = fractalExists(canvas);
 			
 			if (existingFractal) {
+				$.extend(existingFractal.options, options);
 				existingFractal.drawFractal();
 				return true;
 			}
@@ -542,7 +543,7 @@
 	/**
 	 * this function destroys the fractal object related to the supplied canvas
 	 */
-	$.fn.destroyFractalJS = function() {
+	$.fn.fractaljsDestroy = function() {
 		return this.each(function() {
 			var canv = this;
 			
