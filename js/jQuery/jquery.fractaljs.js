@@ -82,11 +82,11 @@
 		},
 		
 		/**
-		 * The square of the modulus of a complex number
+		 * The modulus of a complex number
 		 * 
 		 * @return number
 		 */
-		modSquared: function() {
+		mod: function() {
 		    return this.real * this.real + this.imaginary * this.imaginary;
 		},
 		
@@ -313,7 +313,12 @@
 			
 			this.width = this.canvas.width;
 			this.height = this.canvas.height;
+			
+			//this reestablishes the width, height, and number of pixels in the image data object (only really matters if width/height changed)
 			this.establishImageData();
+			
+			//shows the message over the fractal and changes its width and height to 
+			this.$loadMessage.width(this.width).height(this.height).show();
 			
 			//adjust the zoom settings to accommodate non-square canvases
 			this.zoom.height = this.zoom.width * (this.height/this.width);
@@ -328,12 +333,12 @@
 					i = 0;
 					overIterated = false;
 					
-					while (z.modSquared() < 4 && !overIterated) {
+					while (z.mod() < 4 && !overIterated) {
 						z = z.mult(z).add(c);
 						i++;
 						
 						if (i > this.options.maxIterations) {
-							//if z.modSquared() is still less than 4 and we're past our maxIterations counter, assume the point is in the set
+							//if z.mod() is still less than 4 and we're past our maxIterations counter, assume the point is in the set
 							//and color the pixel black
 							i = 0;
 							this.image.data[pixel] = 0;
@@ -366,6 +371,9 @@
 					}
 				}
 			}
+			
+			//hide the message
+			this.$loadMessage.hide();
 			
 			//put the image data into the canvas (i.e. render it)
 			this.ctx.putImageData(this.image, 0, 0);
