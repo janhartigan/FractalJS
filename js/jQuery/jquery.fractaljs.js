@@ -430,7 +430,7 @@
 				case 5:
 					cols.r = 255;
 					cols.g = 0;
-					cols.b = 255 - 5; break;
+					cols.b = 255 - t; break;
 			}
 			
 			return cols;
