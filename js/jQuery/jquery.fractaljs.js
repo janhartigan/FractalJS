@@ -192,6 +192,13 @@
 			 */
 			maxIterations: 300,
 			
+			/* The escape value to be used during the iterations. If the modulus squared of the current value of Z reaches above this, consider
+			 * the point outside the set
+			 * 
+			 * @type Int
+			 */
+			escapeValue: 4,
+			
 			/* The color range multiplier. This number represents the number of times the color spectrum repeats itself.
 			 * 
 			 * @type Int
@@ -321,6 +328,21 @@
 			this.zoom.height = this.zoom.width * (this.height/this.width);
 			this.zoom.y = this.zoom.y - (origZoomHeight - this.zoom.height)/2;
 			
+			//iterate to the next generation
+			this.generation++;
+			this.currentRow = 0;
+			
+			//now test if workers are being used. If so, start the row-by-row drawing and skip this basic iteration
+			if (this.workers) {
+				for (var i = 0; i < this.options.numWorkers; i++) {
+					if (this.workers[i].idle) {
+						this.processRow(this.workers[i]);
+					}
+				}
+				
+				return true;
+			}
+			
 			//for each vertical row in the canvas
 			for (y = 0; y < this.height; y++) {
 				//for each horizontal pixel in the row
@@ -330,12 +352,12 @@
 					i = 0;
 					overIterated = false;
 					
-					while (z.mod() < 4 && !overIterated) {
+					while (z.mod() < this.options.escapeValue && !overIterated) {
 						z = z.mult(z).add(c);
 						i++;
 						
 						if (i > this.options.maxIterations) {
-							//if z.mod() is still less than 4 and we're past our maxIterations counter, assume the point is in the set
+							//if z.mod() is still less than escapeValue and we're past our maxIterations counter, assume the point is in the set
 							//and color the pixel black
 							i = 0;
 							this.image.data[pixel] = 0;
