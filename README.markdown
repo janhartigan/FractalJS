@@ -1,6 +1,6 @@
 # FractalJS
 
-A JavaScript HTML5 canvas-based fractal-drawing app that lets you zoom up to any level of precision (or at least as far as JavaScript's floating point precision goes :-). It uses a complex number class to calculate the Mandelbrot set for each pixel in the canvas and colors the points outside the set using a color-smoothing algorithm. 
+A JavaScript HTML5 canvas-based fractal-drawing app that lets you zoom up to any level of precision (or at least as far as JavaScript's floating point precision goes :-).  It uses <a href="http://en.wikipedia.org/wiki/Web_Workers">Web Workers</a> and a complex number class to calculate the Mandelbrot set for each pixel in the canvas and colors the points outside the set using a color-smoothing algorithm. 
 
 <hr />
 
@@ -35,11 +35,11 @@ It's also important to keep in mind that FractalJS doesn't have the capacity for
 These are the settings and callback functions available for the plugin:
 
 <pre>
-{	
+{
+			
 	/* Determines whether or not to draw the control bar below the fractal's canvas.
-	 * If you choose not to use this, you could use the afterDraw callback to display 
-	 * the fractal data to your users, and you should also make use of the zoomButton 
-	 * options to let your users perform actions on the fractal.
+	 * If you choose not to use this, you could use the afterDraw callback to display the fractal data to your users, and you should also
+	 * make use of the zoomButton options to let your users perform actions on the fractal.
 	 * 
 	 * @type Bool
 	 */
@@ -51,6 +51,13 @@ These are the settings and callback functions available for the plugin:
 	 * @type Int
 	 */
 	maxIterations: 300,
+	
+	/* The escape value to be used during the iterations. If the modulus squared of the current value of Z reaches above this, consider
+	 * the point outside the set
+	 * 
+	 * @type Int
+	 */
+	escapeValue: 4,
 	
 	/* The color range multiplier. This number represents the number of times the color spectrum repeats itself.
 	 * 
@@ -69,6 +76,24 @@ These are the settings and callback functions available for the plugin:
 	 * @type Int
 	 */
 	height: 0,
+	
+	/* Setting this to false turns off Web Workers (also if your browser doesn't support workers, it'll turn it off)
+	 * 
+	 * @type Bool
+	 */
+	useWorkers: true,
+	
+	/* Contains the path to the worker js file
+	 * 
+	 * @type String
+	 */
+	workerPath: 'fractaljs.worker.js',
+	
+	/* This determines how many workers are created to do the work if useWorkers is turned on and Workers are available
+	 * 
+	 * @type Int
+	 */
+	numWorkers: 10,
 	
 	/**
 	 * This callback fires after the fractal has been drawn
