@@ -2,8 +2,6 @@
 
 A JavaScript HTML5 canvas-based fractal-drawing app that lets you zoom up to any level of precision (or at least as far as JavaScript's floating point precision goes :-).  It uses <a href="http://en.wikipedia.org/wiki/Web_Workers">Web Workers</a> and a complex number class to calculate the Mandelbrot set for each pixel in the canvas and colors the points outside the set using a color-smoothing algorithm. 
 
-<hr />
-
 ## example
 
 Starting with a simple canvas that has a width and height declared:
