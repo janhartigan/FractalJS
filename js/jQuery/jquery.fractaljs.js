@@ -332,7 +332,9 @@
 					var worker = new Worker(this.options.workerPath);
 					
 					//set the onmessage callback
-					worker.onmessage = this.receiveRow;
+					worker.onmessage = function(e) {
+						self.receiveRow(e);
+					};
 					//set the initial state to idle==true so we know we can use it later
 					worker.idle = true;
 					//push this instance onto the workers array
@@ -391,6 +393,7 @@
 			//iterate to the next generation
 			this.generation++;
 			this.currentRow = 0;
+			this.rowsCompleted = 0;
 			
 			//now test if workers are being used. If so, start the row-by-row drawing and skip this basic iteration
 			if (this.workers) {
@@ -494,13 +497,14 @@
 		receiveRow: function(e) {
 			var worker = e.target,
 				data = e.data,
-				rowLen = e.data.imageData.length;
-			
+				rowLen = e.data.imageData.length,
+				i = 0,
+				pixelsBefore = data.row * rowLen;
+			console.log(data);
 			if (data.generation == this.generation) {
-				var aFirst = this.image.data.slice(0, (data.row * rowLen) - 1),
-					aLast = this.image.data.slice( (data.row + 1) * rowLen, (this.height * rowLen) - 1);
-				
-				this.image.data = aFirst.concat(data.imageData, aLast);
+				for (i = 0; i < rowLen; i++) {
+					this.image.data[i + pixelsBefore] = data.imageData[i];
+				}
 				
 				this.rowsCompleted++;
 				
