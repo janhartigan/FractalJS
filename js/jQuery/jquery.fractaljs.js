@@ -500,7 +500,7 @@
 				rowLen = e.data.imageData.length,
 				i = 0,
 				pixelsBefore = data.row * rowLen;
-			console.log(data);
+			
 			if (data.generation == this.generation) {
 				for (i = 0; i < rowLen; i++) {
 					this.image.data[i + pixelsBefore] = data.imageData[i];
