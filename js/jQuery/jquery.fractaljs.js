@@ -111,7 +111,8 @@
 	/**
 	 * the fractal object is a function whose constructor accepts a canvas element and an options array
 	 * 
-	 * @param domElement	canvas
+	 * @param DOMElement	canvas
+	 * @param Object	options
 	 */
 	function fractal(canvas, options) {
 		return this.init(canvas, options);
