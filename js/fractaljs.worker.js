@@ -1,5 +1,5 @@
 self.onmessage = function(e) {
-	var data = e.data,
+	var data = JSON.parse(e.data),
 		z0 = new ComplexNumber(0,0),
 		z = z0,
 		x,
@@ -58,7 +58,7 @@ self.onmessage = function(e) {
 	
 	data.imageData = imageData;
 	
-	self.postMessage(data);
+	self.postMessage(JSON.stringify(data));
 }
 
 

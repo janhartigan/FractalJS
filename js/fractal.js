@@ -475,7 +475,8 @@
 		 * @param Worker	worker
 		 */
 		processRow: function(worker) {
-			var row = this.currentRow++;
+			var row = this.currentRow++,
+				message;
 			
 			if (row >= this.height) {
 				//if the row is beyond the last row of the canvas, set this worker to idle
@@ -483,8 +484,7 @@
 			} else {
 				//otherwise, send the message off to the worker
 				worker.idle = false;
-				
-				worker.postMessage({
+				message = JSON.stringify({
 					row: row,
 					width: this.width,
 					height: this.height,
@@ -494,6 +494,8 @@
 					colorRangeRepeats: this.options.colorRangeRepeats,
 					escapeValue: this.options.escapeValue
 				});
+				
+				worker.postMessage(message);
 			}
 		},
 		
@@ -504,8 +506,8 @@
 		 */
 		receiveRow: function(e) {
 			var worker = e.target,
-				data = e.data,
-				rowLen = e.data.imageData.length,
+				data = JSON.parse(e.data),
+				rowLen = data.imageData.length,
 				i = 0,
 				pixelsBefore = data.row * rowLen;
 			
