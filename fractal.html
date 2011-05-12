@@ -1,11 +1,24 @@
-<div id="canvcont">
-	<canvas id="mycanvas" width="300" height="300"></canvas>
-		<div>
-			<input type="button" id="clear_button" value="cleardabrot" />
-			<input type="button" id="refill_button" value="refilldabrot" />
-			<input type="button" id="zoomin_button" value="zoom in" />
-			<input type="button" id="zoomout_button" value="zoom out" />
-			<input type="text" id="maxits" value="" />
+<html>
+	<head>
+		<script type="text/javascript" src="js/fractal.js"></script>
+		<script type="text/javascript">
+			function buildFractal() {
+				var canv = document.getElementById('mycanvas'),
+					options = {
+						useWorkers: false,
+						workerPath: 'js/fractaljs.worker.js'
+					};
+				
+				fractaljs.create(canv, options);
+			}
+			
+			window.onload = buildFractal;
+		</script>
+	</head>
+	<body>
+		<div id="canvcont">
+			<canvas id="mycanvas" width="300" height="300"></canvas>
 		</div>
-	</div>
-<div id="message"></div>
+		<div id="message"></div>
+	</body>
+</html>
